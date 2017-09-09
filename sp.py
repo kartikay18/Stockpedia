@@ -1,6 +1,5 @@
 import bs4 as bs
 import datetime as dt
-import matplotlib.pyplot as plt
 from matplotlib import style
 import numpy as np
 import os
@@ -10,28 +9,22 @@ import urllib2
 import pytz
 import pandas as pd
 from bs4 import BeautifulSoup
-import pandas_datareader.data as web
 import pickle
 import requests
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.pyplot as plt2
 import pandas as pd
-from pandas import datetime
 import math, time
 import itertools
-from sklearn import preprocessing
-import datetime
+import keras
+import pandas_datareader.data as web
+import h5py
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.recurrent import LSTM
 from keras.models import load_model
-import keras
-import pandas_datareader.data as web
-import h5py
-site = "http://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+
 
 stocks = ['VMW','SPLK','GOOG', 'FB', 'NVDA', 'AAPL', 'AMZN', 'MSFT']
 
@@ -95,21 +88,13 @@ def build_model2(layers, neurons, d):
     return model
 
 
-def model_score(model, X_train, y_train, X_test, y_test):
-    trainScore = model.evaluate(X_train, y_train, verbose=0)
-    #print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
-    
-    testScore = model.evaluate(X_test, y_test, verbose=0)
-    #print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore[0], math.sqrt(testScore[0])))
-    return trainScore[0], testScore[0]
-
-
 def percentage_difference(model, X_test, y_test):
     percentage_diff=[]
     
     p = model.predict(X_test)
     for u in range(len(y_test)): # for each data index in test data
         pr = p[u][0] # pr = prediction on day u
+        print pr
     return p
 
 def denormalize(stock_name, normalized_value):
@@ -140,8 +125,7 @@ if __name__ == '__main__':
         shape = [4, seq_len, 1] # feature, window, output
         #neurons = [128, 128, 32, 1]
         neurons=[256,256,32,1]
-        #epochs = 300
-        epochs = 100
+        epochs = 30
         df__0 = get_stock_data(stock_name, normalize=True)
         X_train, y_train, X_test, y_test = load_data(df__0, seq_len)
         X_train.shape[0], X_train.shape[1], X_train.shape[2]
@@ -154,7 +138,6 @@ if __name__ == '__main__':
           epochs=epochs,
           validation_split=0.1,
           verbose=1)
-        model_score(model, X_train, y_train, X_test, y_test)
         p = percentage_difference(model, X_test, y_test)
         model.save(stock +'.h5')
 
