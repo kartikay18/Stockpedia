@@ -1,2 +1,2 @@
 # PennApps17
-not sure 
+Requirements are for your reference only, not part of the virtual environment. definitely create a virtualenv when installing all the dependencies. 
