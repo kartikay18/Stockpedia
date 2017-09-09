@@ -69,13 +69,16 @@ def load_data(stock, seq_len):
 #print row
     
     train = result[:int(row), :] # 90% date
+    print train
 #print train
     X_train = train[:, :-1] # all data until day m
     y_train = train[:, -1][:,-1] # day m + 1 adjusted close price
     
+    print X_train.shape
+    print y_train.shape
     X_test = result[int(row):, :-1]
     y_test = result[int(row):, -1][:,-1]
-
+    print y_test.shape
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], amount_of_features))
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], amount_of_features))
 #print (X_train.shape)
@@ -98,7 +101,7 @@ def build_model2(layers, neurons, d):
     # model = load_model('my_LSTM_stock_model1000.h5')
     # adam = keras.optimizers.Adam(decay=0.2)
     model.compile(loss='mse',optimizer='adam', metrics=['accuracy'])
-    model.summary()
+    #model.summary()
     return model
 
 
@@ -117,7 +120,7 @@ def percentage_difference(model, X_test, y_test):
     p = model.predict(X_test)
     for u in range(len(y_test)): # for each data index in test data
         pr = p[u][0] # pr = prediction on day u
-        print pr
+    #print pr
     return p
 
 def denormalize(stock_name, normalized_value):
@@ -151,7 +154,7 @@ if __name__ == '__main__':
         #neurons = [128, 128, 32, 1]
         neurons=[256,256,32,1]
         #epochs = 300
-        epochs = 2
+        epochs = 100
         df__0 = get_stock_data(stock_name, normalize=True)
         
         print df__0
