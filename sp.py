@@ -147,7 +147,7 @@ if __name__ == '__main__':
         #neurons = [128, 128, 32, 1]
         neurons=[256,256,32,1]
         #epochs = 300
-        epochs=100
+        epochs = 100
         df__0 = get_stock_data(stock_name, normalize=True)
         X_train, y_train, X_test, y_test = load_data(df__0, seq_len)
         X_train.shape[0], X_train.shape[1], X_train.shape[2]
@@ -162,8 +162,7 @@ if __name__ == '__main__':
           verbose=1)
         model_score(model, X_train, y_train, X_test, y_test)
         p = percentage_difference(model, X_test, y_test)
-        plot_result(stock_name, p, y_test)
-
+    model.save('sp.h5')
 
 
 
