@@ -33,7 +33,7 @@ import pandas_datareader.data as web
 import h5py
 site = "http://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 
-stocks = ['ABT', 'ABBV', 'ACN', 'ADBE', 'ADT', 'AAP', 'AES', 'AET', 'AFL', 'AMG', 'A', 'GAS', 'APD', 'ARG', 'AKAM', 'AA', 'AGN', 'ALXN', 'ALLE', 'ADS', 'ALL', 'ALTR', 'MO', 'AMZN', 'AEE', 'AAL', 'AEP', 'AXP', 'AIG', 'AMT', 'AMP', 'ABC', 'AME', 'AMGN', 'APH', 'APC', 'ADI', 'AON', 'APA', 'AIV', 'AMAT', 'ADM', 'AIZ', 'T', 'ADSK', 'ADP', 'AN', 'AZO', 'AVGO', 'AVB', 'AVY', 'BHI', 'BLL', 'BAC', 'BK', 'BCR', 'BXLT', 'BAX', 'BBT', 'BDX', 'BBBY', 'BRK-B', 'BBY', 'BLX', 'HRB', 'BA', 'BWA', 'BXP', 'BSK', 'BMY', 'BRCM', 'BF-B', 'CHRW', 'CA', 'CVC', 'COG', 'CAM', 'CPB', 'COF', 'CAH', 'HSIC', 'KMX', 'CCL', 'CAT', 'CBG', 'CBS', 'CELG', 'CNP', 'CTL', 'CERN', 'CF', 'SCHW', 'CHK', 'CVX', 'CMG', 'CB', 'CI']
+stocks = ['VMW','SPLK','GOOG', 'FB', 'NVDA', 'AAPL', 'AMZN', 'MSFT']
 
 
 def get_stock_data(stock_name, normalize=True):
@@ -62,9 +62,14 @@ def load_data(stock, seq_len):
         result.append(data[index: index + sequence_length]) # index : index + 22days
     
     result = np.array(result)
+
+#print result
+
     row = round(0.9 * result.shape[0]) # 90% split
+#print row
     
     train = result[:int(row), :] # 90% date
+#print train
     X_train = train[:, :-1] # all data until day m
     y_train = train[:, -1][:,-1] # day m + 1 adjusted close price
     
@@ -73,8 +78,8 @@ def load_data(stock, seq_len):
 
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], amount_of_features))
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], amount_of_features))
-    print (X_train.shape)
-    print (y_train.shape)
+#print (X_train.shape)
+#print (y_train.shape)
     return [X_train, y_train, X_test, y_test]
 
 
@@ -99,10 +104,10 @@ def build_model2(layers, neurons, d):
 
 def model_score(model, X_train, y_train, X_test, y_test):
     trainScore = model.evaluate(X_train, y_train, verbose=0)
-    print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
+    #print('Train Score: %.5f MSE (%.2f RMSE)' % (trainScore[0], math.sqrt(trainScore[0])))
     
     testScore = model.evaluate(X_test, y_test, verbose=0)
-    print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore[0], math.sqrt(testScore[0])))
+    #print('Test Score: %.5f MSE (%.2f RMSE)' % (testScore[0], math.sqrt(testScore[0])))
     return trainScore[0], testScore[0]
 
 
@@ -112,8 +117,7 @@ def percentage_difference(model, X_test, y_test):
     p = model.predict(X_test)
     for u in range(len(y_test)): # for each data index in test data
         pr = p[u][0] # pr = prediction on day u
-        
-        percentage_diff.append((pr-y_test[u]/pr)*100)
+        print pr
     return p
 
 def denormalize(stock_name, normalized_value):
@@ -138,8 +142,8 @@ def plot_result(stock_name, normalized_value_p, normalized_value_y_test):
 if __name__ == '__main__':
     #initialize()
     for stock in stocks:
-        print stock
-        print '\n'
+        #print stock
+        #print '\n'
         stock_name = stock
         seq_len = 22
         d = 0.2
@@ -147,8 +151,11 @@ if __name__ == '__main__':
         #neurons = [128, 128, 32, 1]
         neurons=[256,256,32,1]
         #epochs = 300
-        epochs = 100
+        epochs = 2
         df__0 = get_stock_data(stock_name, normalize=True)
+        
+        print df__0
+        
         X_train, y_train, X_test, y_test = load_data(df__0, seq_len)
         X_train.shape[0], X_train.shape[1], X_train.shape[2]
         y_train.shape[0]
@@ -162,7 +169,7 @@ if __name__ == '__main__':
           verbose=1)
         model_score(model, X_train, y_train, X_test, y_test)
         p = percentage_difference(model, X_test, y_test)
-    model.save('sp.h5')
+        model.save(stock +'.h5')
 
 
 
