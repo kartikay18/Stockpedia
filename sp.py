@@ -42,7 +42,6 @@ def get_stock_data(stock_name, normalize=True):
     end = datetime.date.today()
     df = web.DataReader(stock_name, "yahoo", start, end)
     df.drop(['Volume', 'Close'], 1, inplace=True)
-    #    print (df)
     if normalize:
         min_max_scaler = preprocessing.MinMaxScaler()
         df['Open'] = min_max_scaler.fit_transform(df.Open.values.reshape(-1,1))
@@ -63,26 +62,17 @@ def load_data(stock, seq_len):
     
     result = np.array(result)
 
-#print result
 
     row = round(0.9 * result.shape[0]) # 90% split
-#print row
     
     train = result[:int(row), :] # 90% date
-    print train
-#print train
+
     X_train = train[:, :-1] # all data until day m
     y_train = train[:, -1][:,-1] # day m + 1 adjusted close price
-    
-    print X_train.shape
-    print y_train.shape
     X_test = result[int(row):, :-1]
     y_test = result[int(row):, -1][:,-1]
-    print y_test.shape
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], amount_of_features))
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], amount_of_features))
-#print (X_train.shape)
-#print (y_train.shape)
     return [X_train, y_train, X_test, y_test]
 
 
@@ -120,7 +110,6 @@ def percentage_difference(model, X_test, y_test):
     p = model.predict(X_test)
     for u in range(len(y_test)): # for each data index in test data
         pr = p[u][0] # pr = prediction on day u
-    #print pr
     return p
 
 def denormalize(stock_name, normalized_value):
@@ -145,8 +134,6 @@ def plot_result(stock_name, normalized_value_p, normalized_value_y_test):
 if __name__ == '__main__':
     #initialize()
     for stock in stocks:
-        #print stock
-        #print '\n'
         stock_name = stock
         seq_len = 22
         d = 0.2
@@ -156,9 +143,6 @@ if __name__ == '__main__':
         #epochs = 300
         epochs = 100
         df__0 = get_stock_data(stock_name, normalize=True)
-        
-        print df__0
-        
         X_train, y_train, X_test, y_test = load_data(df__0, seq_len)
         X_train.shape[0], X_train.shape[1], X_train.shape[2]
         y_train.shape[0]
