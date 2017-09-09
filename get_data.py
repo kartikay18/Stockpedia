@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt2
 import pandas as pd
+import json
+import httplib, urllib, urllib2
 from pandas import datetime
 import math, time
 import itertools
@@ -41,6 +43,7 @@ url = 'https://newsapi.org/v1/articles'
 
 params = dict(
               source = 'the-next-web',
+              sortBy = 'latest',
               apiKey = {key}
               )
 
@@ -54,11 +57,33 @@ data = json.loads(resp.text)
 lst = list()
 for item in data['articles']:
     sub = item['description']
-    lst.append(sub)
+    lst.append((sub))
     with open('data3.txt', 'a+') as outfile:
         outfile.write(sub.encode('ascii', 'ignore'))
 print lst
 
+
+
+# HTTP request to a sent analysis API
+
+params2 = urllib.urlencode({
+                           'text' : {resp.text}
+                          })
+
+
+url2 = 'http://text-processing.com/api/sentiment/'
+request = urllib2.Request(url2, params2)
+
+response = urllib2.urlopen(request)
+
+print response.read()
+
+
+
+#encoding = response.info().get_content_charset('utf8')
+#data = json.loads(response.read().decode(encoding))
+
+#urllib2.urlopen("http://text-processing.com/api/sentiment/").read()
 
 #sources[0]['id']
 
