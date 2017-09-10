@@ -1,18 +1,16 @@
-import bs4 as bs
+#import bs4 as bs
 import datetime as dt
 from matplotlib import style
-from predict import predict_stock
 import numpy as np
 import os
 import datetime
 from sklearn import preprocessing
-import urllib2
+#import urllib2
 import pytz
 import pandas as pd
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 import pickle
 import requests
-import json
 import numpy as np
 import pandas as pd
 import math, time
@@ -61,14 +59,22 @@ def load_data(stock, seq_len):
     row = round(0.9 * result.shape[0]) # 90% split
     
     train = result[:int(row), :] # 90% date
-
+                   
     X_train = train[:, :-1] # all data until day m
-    y_train = train[:, -1][:,-1] # day m + 1 adjusted close price
+    y_train_open=train[:,-1][:,0]
+    y_train_high=train[:,-1][:,1]
+    y_train_low=train[:,-1][:,2]
+    y_train_close = train[:, -1][:,-1] # day m + 1 adjusted close price
+#    print (y_train_open[0],y_train_close[0],y_train_high[0],y_train_low[0])
+    print (y_train_open[0])
     X_test = result[int(row):, :-1]
-    y_test = result[int(row):, -1][:,-1]
+    y_test_open=train[int(row):,-1][:,0]
+    y_test_high=train[int(row):,-1][:,1]
+    y_test_low=train[int(row):,-1][:,2]
+    y_test_close = result[int(row):, -1][:,-1]
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], amount_of_features))
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], amount_of_features))
-    return [X_train, y_train, X_test, y_test]
+    return [X_train, y_train_open,y_train_high,y_train_low ,y_train_close,X_test, y_test_open,y_test_high,y_test_low,y_test_close]
 
 
 
@@ -96,7 +102,7 @@ def percentage_difference(model, X_test, y_test):
     p = model.predict(X_test)
     for u in range(len(y_test)): # for each data index in test data
         pr = p[u][0] # pr = prediction on day u
-        print pr
+#        print pr
     return p
 
 def denormalize(stock_name, normalized_value):
@@ -120,10 +126,7 @@ def plot_result(stock_name, normalized_value_p, normalized_value_y_test):
 
 if __name__ == '__main__':
     #initialize()
-    symbol="Apple"
-    model = load_model('AAPL.h5')
-    """    
-        for stock in stocks:
+    for stock in stocks:
         stock_name = stock
         seq_len = 22
         d = 0.2
@@ -131,46 +134,57 @@ if __name__ == '__main__':
         #neurons = [128, 128, 32, 1]
         neurons=[256,256,32,1]
         epochs = 30
+#        epochs=1
         df__0 = get_stock_data(stock_name, normalize=True)
-        X_train, y_train, X_test, y_test = load_data(df__0, seq_len)
+#        load_data(df__0, seq_len)
+        X_train, y_train_open,y_train_high,y_train_low ,y_train_close,X_test, y_test_open,y_test_high,y_test_low,y_test_close= load_data(df__0, seq_len)
+        
         X_train.shape[0], X_train.shape[1], X_train.shape[2]
-        y_train.shape[0]
+        y_train_open.shape[0]
+        y_train_high.shape[0]
+        y_train_low.shape[0]
+        y_train_close.shape[0]
+        print X_train.shape
         model = build_model2(shape, neurons, d)
+#        tem[=['open','high','low','close']
         model.fit(
           X_train,
-          y_train,
+          y_train_open,
           batch_size=512,
           epochs=epochs,
           validation_split=0.1,
           verbose=1)
-        p = percentage_difference(model, X_test, y_test)
-        model.save(stock +'.h5')
-    """
-        
+#        p = percentage_difference(model, X_test, y_test)
+        model.save(stock +'_open.h5')
+        model.fit(
+                  X_train,
+                  y_train_high,
+                  batch_size=512,
+                  epochs=epochs,
+                  validation_split=0.1,
+                  verbose=1)
+                  #        p = percentage_difference(model, X_test, y_test)
+        model.save(stock +'_high.h5')
+        model.fit(
+                            X_train,
+                            y_train_open,
+                            batch_size=512,
+                            epochs=epochs,
+                            validation_split=0.1,
+                            verbose=1)
+                  #        p = percentage_difference(model, X_test, y_test)
+        model.save(stock +'_low.h5')
+        model.fit(
+                  X_train,
+                  y_train_close,
+                  batch_size=512,
+                  epochs=epochs,
+                  validation_split=0.1,
+                  verbose=1)
+                  #        p = percentage_difference(model, X_test, y_test)
+        model.save(stock +'_close.h5')
 
-# add model. predict return the output to result
-    url = 'https://data.chastiser11.hasura-app.io/v1/query'
 
-# Sample row input
-
-        
-
-    payload = {"type": "select", "args":{"table": "companyDB", "columns": ["stocksymbol"],
-        "where": { "name": symbol} }}
-        
-    headers = {"content-type": "application/json", "authorization": "Bearer wj7fmf21w6lvu0l4u7vmdef1tqo0cykn"}
-        
-    r = requests.post(url, json.dumps(payload), headers=headers)
-    stock_symbol = json.loads(r.text)
-
-    if r.status_code == 200:
-        print 'success'
-        predict_stock(stock_symbol[0]['stocksymbol'],10)
-    else:
-        print 'error: ' + str(r.status_code) + '\n\n' + r.text
-
-
-#results = p
 
 
 
