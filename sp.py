@@ -1,6 +1,7 @@
 import bs4 as bs
 import datetime as dt
 from matplotlib import style
+from predict import predict_stock
 import numpy as np
 import os
 import datetime
@@ -11,6 +12,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import pickle
 import requests
+import json
 import numpy as np
 import pandas as pd
 import math, time
@@ -118,7 +120,10 @@ def plot_result(stock_name, normalized_value_p, normalized_value_y_test):
 
 if __name__ == '__main__':
     #initialize()
-    for stock in stocks:
+    symbol="Apple"
+    model = load_model('AAPL.h5')
+    """    
+        for stock in stocks:
         stock_name = stock
         seq_len = 22
         d = 0.2
@@ -140,6 +145,33 @@ if __name__ == '__main__':
           verbose=1)
         p = percentage_difference(model, X_test, y_test)
         model.save(stock +'.h5')
+    """
+        
+
+# add model. predict return the output to result
+    url = 'https://data.chastiser11.hasura-app.io/v1/query'
+
+# Sample row input
+
+        
+
+    payload = {"type": "select", "args":{"table": "companyDB", "columns": ["stocksymbol"],
+        "where": { "name": symbol} }}
+        
+    headers = {"content-type": "application/json", "authorization": "Bearer wj7fmf21w6lvu0l4u7vmdef1tqo0cykn"}
+        
+    r = requests.post(url, json.dumps(payload), headers=headers)
+    stock_symbol = json.loads(r.text)
+
+    if r.status_code == 200:
+        print 'success'
+        predict_stock(stock_symbol[0]['stocksymbol'],10)
+    else:
+        print 'error: ' + str(r.status_code) + '\n\n' + r.text
+
+
+#results = p
+
 
 
 
