@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', 'Helvetica Neue', Verdana, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.15em;
+  color: #777;
+}
+
+div#container {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 100vw;
+    height: 100vh;
+}
+
+div#header {
+    flex: 0 0 72px;
+    background-color: #477DB1;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: white;
+}
+
+img#logo {
+    padding: 5px 0 5px 5px;
+}
+
+p#title {
+    font-family: 'Trajan Pro';
+    font-size: 2rem;
+    letter-spacing: 0.08em;
+    height: 2rem;
+    line-height: 2rem;
+}
+
+.none {
+    display: none;
+}
+
+p#menu {
+    font-size: 0.8rem;
+}
+
+div#footer {
+    flex: 0 0 4em;
+    background-color: #477DB1;
+    color: white;
+    font-size: 0.6rem;
+    line-height: 0.72rem;
+    padding: 5px;
+}
+
+div#footer p {
+    max-width: 75em;
+    margin: 0 auto;
+}
+
+div#body {
+    flex: 1 0 0;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+
+div#sidebar {
+    flex: 3 0 0;
+    max-width: 300px;
+}
+
+div#sidebar > ul {
+    list-style-type: none;
+    padding: 10px 0;
+}
+
+div#sidebar > ul > li > a {
+    display: block;
+    padding-left: 2em;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+}
+
+div#sidebar > ul > li > a:hover, div#sidebar > ul > li > a.selected {
+    border-left: 5px solid #A8C7E1;
+    padding-left: calc(2em - 5px);
+    background-color: #eee;
+}
+
+div#main-content {
+    overflow: scroll;
+    flex: 7 0 0;
+    padding: 20px 10px 10px 40px;
+}
+
+button {
+    padding: 5px;
+}
+
+h1, h2, h3, h4, h5, h6, #main-content p {
+    margin-bottom: 0.3em;
+    padding-bottom: 0.6em;
+}
+
+div#stock-picks {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin: 10px auto;
+    max-width: 400px;
+}
+
+div.stock-pick {
+    flex-basis: 0 0 120px;
+    font-size: 0.8rem;
+}
+
+div.stock-pick img {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    overflow: hidden;
+}
+
+div.stock-pick .name {
+    text-align: center;
+}
+
+div.stock-pick .pick {
+    text-align: center;
+    font-weight: bolder;
+}
+
+svg.candlestick {
+    background-color: rgb(30, 43, 52);
+}
+
+path.candle {
+    stroke: rgb(206, 210, 213);
+}
+
+path.candle.body {
+    stroke-width: 0;
+}
+
+path.candle.up {
+    fill: rgb(151, 247, 126);
+    stroke: rgb(151, 247, 126);
+}
+
+path.candle.down {
+    fill: rgb(255, 105, 57);
+    stroke: rgb(255, 105, 57);
+}
+
+text {
+    fill: rgb(206, 210, 213);
+}
+
+input.ticksymbol {
+    width: 400px;
+    margin: 1em;
+    height: 2em;
+    border-radius: 4px;
+}
