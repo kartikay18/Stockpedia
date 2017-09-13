@@ -3,5 +3,7 @@ Built using machine learning (Tensorflow layered with Keras GAN) to predict stoc
 
 REST API is cooked up using Hasura.io, a Firebase-like PaaS driven by PostgreSQL as opposed to NoSQL.
 
-Team: Jason Lin@GT, Kartikay Goyle@UofT, Gayatri Joshi@CMU, Joe Qian@UCLA
+**Team**:: Jason Lin@GT, Kartikay Goyle@UofT, Gayatri Joshi@CMU, Joe Qian@UCLA
+
+> PennApps Top 30 finalist
 
