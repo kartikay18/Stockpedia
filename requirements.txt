@@ -9,7 +9,7 @@ colorama==0.3.7
 docutils==0.13.1
 Facebook==0.0
 futures==3.1.1
-httpie==0.9.9
+httpie==1.0.3
 idna==2.5
 jmespath==0.9.3
 macholib==1.5.1
