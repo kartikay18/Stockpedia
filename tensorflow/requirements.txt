@@ -86,7 +86,7 @@ public==0.0.0
 pyamg===3.0.1.dev-v3.0.2
 pycosat==0.6.2
 pycparser==2.17
-Pygments==2.2.0
+Pygments==2.7.4
 pyOpenSSL==17.0.0
 pyparsing==2.1.4
 python-dateutil==2.6.1
