@@ -21,7 +21,7 @@ pandas==0.20.2
 psycopg2==2.7.1
 py2app==0.7.3
 pyasn1==0.2.3
-Pygments==2.2.0
+Pygments==2.7.4
 pyobjc-core==2.5.1
 pyobjc-framework-Accounts==2.5.1
 pyobjc-framework-AddressBook==2.5.1
