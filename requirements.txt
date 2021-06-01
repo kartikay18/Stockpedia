@@ -67,7 +67,7 @@ rsa==3.4.2
 s3transfer==0.1.10
 scipy==0.13.0b1
 six==1.10.0
-urllib3==1.21.1
+urllib3==1.26.5
 vboxapi==1.0
 virtualenv==15.1.0
 xattr==0.6.4
