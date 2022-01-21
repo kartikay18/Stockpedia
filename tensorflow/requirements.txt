@@ -37,7 +37,7 @@ image==1.5.7
 inflection==0.3.1
 ipaddress==1.0.18
 ipykernel==4.6.1
-ipython==5.4.1
+ipython==7.16.3
 ipython-genutils==0.2.0
 ipywidgets==6.0.0
 itsdangerous==0.24
