@@ -31,7 +31,7 @@ functools32==3.2.3.post2
 get==0.0.0
 gunicorn==19.7.1
 h5py==2.7.0
-html5lib==0.9999999
+html5lib==0.999999999
 idna==2.5
 image==1.5.7
 inflection==0.3.1
